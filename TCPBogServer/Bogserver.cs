@@ -1,26 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using BogLib;
 
 namespace TCPBogServer
 {
     internal class Bogserver
     {
+        private static List<Bog> bogs = new List<Bog>()
+        {
+            new Bog("title", "fofatter", 500, "1234567890123")
+
+        };
+        
+
         internal void Start()
         {
-           TcpListener server = new TcpListener(IPAddress.Loopback, 4646);
-           server.Start();
-           while (true)
-           {
-               TcpClient socket = server.AcceptTcpClient();
-               Task.Run(() =>
-               {
-                   TcpClient tempSocket = socket;
-                   DoClient(tempSocket);
-               });
-           }
+            TcpListener server = new TcpListener(IPAddress.Loopback, 4646);
+            server.Start();
+            while (true)
+            {
+                TcpClient socket = server.AcceptTcpClient();
+                Task.Run(() =>
+                {
+                    TcpClient tempSocket = socket;
+                    DoClient(tempSocket);
+                });
+            }
         }
 
         private void DoClient(TcpClient socket)
@@ -36,10 +45,13 @@ namespace TCPBogServer
                 String[] vs = str.Split(" ");
 
                 String strRetur = ("Resultat = ");
-                String test = vs[0];
-                if (test == "HentAlle")
+                String command = vs[0];
+                String test = bogs.ToString();
+                String mytest = Isbn13;
+                if (command == "HentAlle")
                 {
-                    sw.WriteLine(strRetur + "virker ikke lige pt");
+                    sw.WriteLine(strRetur + test);
+                    sw.Flush();
                 }
             }
         }
